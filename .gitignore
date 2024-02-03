@@ -22,3 +22,6 @@ go.work
 
 # sqlite3 file
 *.db
+
+# vegeta qa
+qa.txt

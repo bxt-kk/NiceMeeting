@@ -9,9 +9,9 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var SECURITY_KEY = "xxx"
 
-const (
+var (
+    SECURITY_KEY         = "xxx"
     DB_FILE              = "./nm.db"
     DB_MAX_OPEN_CONNS    = 60
     DB_MAX_IDLE_CONNS    = 10
@@ -20,40 +20,51 @@ const (
 
 var db *sql.DB
 
-func checkError(err error) {
-    if err != nil {
-        log.Fatal(err)
-    }
+func SetDBFile(filename string) {
+    DB_FILE = filename
 }
 
-func Init(user User) {
+func Init(user User) error {
     log.Println("INIT DB...")
-    var err error
-    if _, err := os.Stat(DB_FILE); !os.IsNotExist(err) {
+    _, err := os.Stat(DB_FILE);
+    if !os.IsNotExist(err) {
         log.Printf("remove %s\n", DB_FILE)
         os.Remove(DB_FILE)
     }
     db, err = sql.Open("sqlite3", DB_FILE)
-    checkError(err)
+    if err != nil {
+        return err
+    }
     defer db.Close()
 
     log.Println("create tables:")
     for idx, table := range tables {
         log.Printf("\t%d. %s;\n", idx + 1, table.name)
         _, err = db.Exec(table.query)
-        checkError(err)
+        if err != nil {
+            return err
+        }
     }
 
     id, err := AddUser(nil, user)
-    checkError(err)
+    if err != nil {
+        return err
+    }
     log.Printf("insert an user[id=%d]\n", id)
+    return nil
 }
 
-func Connect() {
-    var err error
+func Connect() error {
+     _, err := os.Stat(DB_FILE)
+     if os.IsNotExist(err) {
+         return err
+     }
     db, err = sql.Open("sqlite3", DB_FILE)
-    checkError(err)
+    if err != nil {
+        return err
+    }
     db.SetMaxOpenConns(DB_MAX_OPEN_CONNS)
     db.SetMaxIdleConns(DB_MAX_IDLE_CONNS)
     db.SetConnMaxLifetime(DB_CONN_MAX_LIFETIME)
+    return nil
 }

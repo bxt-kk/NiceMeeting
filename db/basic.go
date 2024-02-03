@@ -8,6 +8,7 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"strings"
+    "time"
 )
 
 func adaptiveExec(ctx context.Context, query string, args ...any) (sql.Result, error) {
@@ -98,8 +99,12 @@ func getPageTotal(
     return total, nil
 }
 
-func hashString(text string) string {
+func HashString(text string) string {
     hasher := sha256.New()
     hasher.Write([]byte(text + SECURITY_KEY))
     return hex.EncodeToString(hasher.Sum(nil))
+}
+
+func nowUnix() int64 {
+    return time.Now().Unix()
 }
