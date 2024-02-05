@@ -1,4 +1,4 @@
-package handlers
+package api
 
 import (
     "log"
@@ -10,47 +10,47 @@ import (
     db "nicemeeting/db"
 )
 
-func HandlerLinksByIds(r *gin.RouterGroup) {
+func GetFeedBackByIds(r *gin.RouterGroup) {
     type Args struct {
         Size   int64 `uri:"size"`
         Page   int64 `uri:"page"`
-        FromId int64 `uri:"from_id"`
-        ToId   int64 `uri:"to_id"`
+        AudienceId int64 `uri:"audience_id"`
+        MeetingId   int64 `uri:"meeting_id"`
     }
-    r.GET("/link/:size/:page/:from_id/:to_id", func (c *gin.Context) {
+    r.GET("/feedback/:size/:page/:audience_id/:meeting_id", func (c *gin.Context) {
         args := Args{}
         if err := c.ShouldBindUri(&args); err != nil {
             c.JSON(http.StatusBadRequest, gin.H{"desc": err})
             return
         }
 
-        links, err := db.GetLinksByPage(
-            c, args.Size, args.Page, args.FromId, args.ToId)
+        feedbacks, err := db.GetFeedBacksByPage(
+            c, args.Size, args.Page, args.AudienceId, args.MeetingId)
         if err != nil {
             c.JSON(http.StatusInternalServerError, gin.H{"desc": "internal server error"})
             log.Panic(err)
             return
         }
-        c.JSON(http.StatusOK, links)
+        c.JSON(http.StatusOK, feedbacks)
     })
 }
 
-func HandlerAddLink(r *gin.RouterGroup) {
-    r.POST("/add/link", func (c *gin.Context) {
-        args := db.Link{}
+func AddFeedBack(r *gin.RouterGroup) {
+    r.POST("/feedback", func (c *gin.Context) {
+        args := db.FeedBack{}
         if err := c.ShouldBindJSON(&args); err != nil {
             c.JSON(http.StatusBadRequest, gin.H{"desc": err})
             return
         }
 
-        from_id := args.FromId
+        user_id := args.AudienceId
         session := sessions.Default(c)
-        if session.Get("hash_id") != hashId(from_id) {
+        if session.Get("hash_id") != hashId(user_id) {
             c.JSON(http.StatusForbidden, gin.H{"desc": "user do not march"})
             return
         }
 
-        if _, err := db.AddLink(c, args); err != nil {
+        if _, err := db.AddFeedBack(c, args); err != nil {
             c.JSON(http.StatusInternalServerError, gin.H{"desc": "internal server error"})
             log.Panic(err)
             return
@@ -59,22 +59,22 @@ func HandlerAddLink(r *gin.RouterGroup) {
     })
 }
 
-func HandlerDelLink(r *gin.RouterGroup) {
-    r.POST("/del/link", func (c *gin.Context) {
-        args := db.Link{}
+func DelFeedBack(r *gin.RouterGroup) {
+    r.POST("/feedback", func (c *gin.Context) {
+        args := db.FeedBack{}
         if err := c.ShouldBindJSON(&args); err != nil {
             c.JSON(http.StatusBadRequest, gin.H{"desc": err})
             return
         }
 
-        from_id := args.FromId
+        user_id := args.AudienceId
         session := sessions.Default(c)
-        if session.Get("hash_id") != hashId(from_id) {
+        if session.Get("hash_id") != hashId(user_id) {
             c.JSON(http.StatusForbidden, gin.H{"desc": "user do not march"})
             return
         }
 
-        if _, err := db.DelLink(c, from_id, args.ToId); err != nil {
+        if _, err := db.DelFeedBack(c, user_id, args.MeetingId, args.Type); err != nil {
             c.JSON(http.StatusInternalServerError, gin.H{"desc": "internal server error"})
             log.Panic(err)
             return

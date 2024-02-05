@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="stylesheet" href="/css/basic.css" type="text/css">
+        <title>Add Content</title>
+    </head>
+    <body>
+        <nav class="menu">
+            <a class="menu-logo" href="/">
+                <img src="/logo/Golang.png"/>
+            </a>
+            <a class="menu-title" href="/">funnylesson</a>
+            <a class="menu-item" href="/courses.html">課程</a>
+            <a class="menu-item" href="/">首頁</a>
+        </nav>
+        <main>
+            <section>
+                <form enctype="multipart/form-data" action="/api/addcontent" method="post" accept-charset="utf-8">
+                    <div>
+                        <label>課程</label>
+                        <input type="number" name="course" id="course" value="">
+                        <small>課程的ID號碼</small>
+                    </div>
+                    <div>
+                        <label>課時</label>
+                        <input type="number" name="lesson" id="lesson" value="">
+                        <small>課時的ID號碼</small>
+                    </div>
+                    <div>
+                        <label>索引</label>
+                        <input type="number" name="index" id="index" value="">
+                        <small>索引號碼「通常留空」</small>
+                    </div>
+                    <input class="button" type="submit" value="提交" />
+                </form>
+            </section>
+        </main>
+    </body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="stylesheet" href="/css/basic.css" type="text/css">
+        <title>Add Lesson</title>
+    </head>
+    <body>
+        <nav class="menu">
+            <a class="menu-logo" href="/">
+                <img src="/logo/Golang.png"/>
+            </a>
+            <a class="menu-title" href="/">funnylesson</a>
+            <a class="menu-item" href="/courses.html">課程</a>
+            <a class="menu-item" href="/">首頁</a>
+        </nav>
+        <main>
+            <section>
+                <form enctype="multipart/form-data" action="/api/addlesson" method="post" accept-charset="utf-8">
+                    <div>
+                        <label>ID</label>
+                        <input type="number" name="id" id="id" value="">
+                        <small>若需要修改已有課時，請指定課時ID</small>
+                    </div>
+                    <div>
+                        <label>標題</label>
+                        <input type="text" name="title" id="title" value="">
+                    </div>
+                    <div>
+                        <label>簡介</label>
+                        <input type="text" name="introduction" id="introduction" value="">
+                    </div>
+                    <div>
+                        <label>關鍵字</label>
+                        <input type="text" name="keywords" id="keywords" value="">
+                    </div>
+                    <div>
+                        <label>資源</label>
+                        <input type="url" name="source" id="source" value="">
+                        <small>視頻地址或視頻播放頁面地址「目前僅支持HLS與西瓜視頻」</small>
+                    </div>
+                    <div>
+                        <label>票券</label>
+                        <input type="number" name="ticket" id="ticket" value="0">
+                        <small>觀看此課時所需花費的票券</small>
+                    </div>
+                    <div>
+                        <label>等級</label>
+                        <select name="level" id="level">
+                            <option value="default">遊客訪問</option>
+                            <option value="vip">會員訪問</option>
+                            <option value="worker">員工訪問</option>
+                            <option value="admin">管理訪問</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>縮略圖</label>
+                        <input type="file" name="image" id="image" value="">
+                    </div>
+                    <input class="button" type="submit" value="提交" />
+                </form>
+            </section>
+        </main>
+    </body>
+</html>
+<script src="/js/functions.js" charset="utf-8"></script>
+<script charset="utf-8">
+const input = document.querySelector('#id');
+input.oninput = async function(e) {
+    const lesson = await load_lesson(e.target.value || 0);
+    Object.entries(lesson).forEach(pair => {
+        if (pair[0] == "Id") return;
+        const tag = document.querySelector(`#${pair[0].toLowerCase()}`);
+        if (tag == null) return;
+        switch (tag.type) {
+            case 'file':
+                break;
+            case 'select-one':
+                tag.children[pair[1]].selected = true;
+                break;
+            default:
+                tag.value = pair[1];
+                break;
+        }
+    });
+}
+</script>

@@ -1,4 +1,4 @@
-package handlers
+package api
 
 import (
     "log"
@@ -10,7 +10,7 @@ import (
     db "nicemeeting/db"
 )
 
-func HandlerMeeting(r *gin.RouterGroup) {
+func GetMeeting(r *gin.RouterGroup) {
     type Args struct {
         Id int64 `uri:"id"`
     }
@@ -35,7 +35,7 @@ func HandlerMeeting(r *gin.RouterGroup) {
     })
 }
 
-func HandlerMeetings(r *gin.RouterGroup) {
+func GetMeetings(r *gin.RouterGroup) {
     type Args struct {
         Size int64 `json:"size"`
         Page int64 `json:"page"`
@@ -57,7 +57,7 @@ func HandlerMeetings(r *gin.RouterGroup) {
     })
 }
 
-func HandlerMeetingsByTag(r *gin.RouterGroup) {
+func GetMeetingsByTag(r *gin.RouterGroup) {
     type Args struct {
         Size int64 `json:"size"`
         Page int64 `json:"page"`
@@ -81,8 +81,8 @@ func HandlerMeetingsByTag(r *gin.RouterGroup) {
     })
 }
 
-func HandlerSetMeeting(r *gin.RouterGroup) {
-    r.POST("/set/meeting", func (c *gin.Context) {
+func SetMeeting(r *gin.RouterGroup) {
+    r.POST("/meeting", func (c *gin.Context) {
         args := db.Meeting{}
         if err := c.ShouldBindJSON(&args); err != nil {
             c.JSON(http.StatusBadRequest, gin.H{"desc": err})
@@ -105,8 +105,8 @@ func HandlerSetMeeting(r *gin.RouterGroup) {
     })
 }
 
-func HandlerAddMeeting(r *gin.RouterGroup) {
-    r.POST("/add/meeting", func (c *gin.Context) {
+func AddMeeting(r *gin.RouterGroup) {
+    r.POST("/meeting", func (c *gin.Context) {
         args := db.Meeting{}
         if err := c.ShouldBindJSON(&args); err != nil {
             c.JSON(http.StatusBadRequest, gin.H{"desc": err})
@@ -129,8 +129,8 @@ func HandlerAddMeeting(r *gin.RouterGroup) {
     })
 }
 
-func HandlerDelMeeting(r *gin.RouterGroup) {
-    r.POST("/del/meeting", func (c *gin.Context) {
+func DelMeeting(r *gin.RouterGroup) {
+    r.POST("/meeting", func (c *gin.Context) {
         args := db.Meeting{}
         if err := c.ShouldBindJSON(&args); err != nil {
             c.JSON(http.StatusBadRequest, gin.H{"desc": err})

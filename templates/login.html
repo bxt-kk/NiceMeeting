@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="stylesheet" href="/css/basic.css" type="text/css">
+        <title>User</title>
+    </head>
+    <body>
+        <nav id="menu" class="menu"></nav>
+        <main>
+            <section>
+                <form action="/api/login" method="post" accept-charset="utf-8">
+                    <div>
+                        <label>郵箱</label>
+                        <input type="email" name="email" id="email" value="">
+                    </div>
+                    <div>
+                        <label>密碼</label>
+                        <input type="password" name="password" id="password" value="">
+                    </div>
+                    <input class="button" type="submit" value="登錄"/>
+                    <a href="/signup.html" style="float: right;font-size: small">還沒有帳號？點擊註冊！</a>
+                </form>
+            </section>
+        </main>
+    </body>
+</html>
+<script src="/js/functions.js" charset="utf-8"></script>
+<script src="/js/modules.js" charset="utf-8"></script>
+<script charset="utf-8"> window.onload = fl_login; </script>

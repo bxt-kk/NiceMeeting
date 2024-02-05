@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="stylesheet" href="/css/basic.css" type="text/css">
+        <title>Users</title>
+    </head>
+    <body>
+        <nav id="menu" class="menu"></nav>
+        <main>
+            <section style="overflow:auto;">
+                <table id="users" style="width:100%; min-width: 36em;">
+                    <tr>
+                        <th>ID</th>
+                        <th>用戶名</th>
+                        <th>電子郵箱</th>
+                        <th>註冊時間</th>
+                        <th>用戶等級</th>
+                    </tr>
+                    <tr id="user" style="text-align: center;">
+                        <td f-name="Id" f-onclick="Id" style="color: blue"></td>
+                        <td f-name="Username"></td>
+                        <td f-name="Email"></td>
+                        <td f-name="Time"></td>
+                        <td f-name="Level"  f-switch="普通;VIP;員工;管理員"></td>
+                    </tr>
+                </table> 
+            </section>
+        </main>
+        <a id="goto" class="goto-btn">
+            <img src="/icon/down-chevron.png" alt=""/>
+        </a>
+        <center id="loading"></center>
+        <footer></footer>
+    </body>
+</html>
+<script src="/js/functions.js" charset="utf-8"></script>
+<script src="/js/modules.js" charset="utf-8"></script>
+<script charset="utf-8">
+// type UserSummary struct {
+//     Id int
+//     Username string
+//     Email string
+//     Introduction string
+//     Image string
+//     Time int
+//     Level string
+// }
+
+var nodes = select_template('#user');
+window.PAGE = 0;
+
+async function load_more() {
+    set_loading('#loading');
+    const data = await load_users(window.PAGE++, 4);
+    del_loading('#loading');
+    data.forEach(item => {
+        item.Time = new Date(item.Time * 1000).toLocaleDateString();
+    });
+    extend_items(data, nodes.tpl, nodes.ptr, id => {
+        location.href = `/user.html?id=${id}`;
+    });
+    return data.length > 0;
+}
+
+window.onload = async function() {
+    new_menu('#menu', [{href: '/courses.html', text: '課程'}]);
+    set_goto('#goto', 'nav');
+    set_height('main', 'footer');
+
+    const footer = document.querySelector("footer");
+    while (footer.getBoundingClientRect().top < window.innerHeight) {
+        if (!(await load_more())) {
+            break;
+        }
+    }
+
+    window.onscroll = async function() {
+        var tag = document.querySelector('footer');
+        var top = tag.getBoundingClientRect().top;
+        if (top < window.innerHeight) {
+            const onscroll = window.onscroll;
+            window.onscroll = null;
+            if (await load_more()) {
+                window.onscroll = onscroll;
+            }
+        }
+    };
+};
+</script>

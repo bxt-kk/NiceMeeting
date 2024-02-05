@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>Lesson</title>
+    </head>
+    <style type="text/css" media="screen">
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <body>
+        <h1>Lesson</h1>
+        <ol id="lesson">
+        </ol>
+    </body>
+</html>
+
+<script charset="utf-8">
+// type Lesson struct {
+//     Id int
+//     Time int64
+//     Title string
+//     Introduction string
+//     Keywords string
+//     Image string
+//     Source string
+//     Type int
+//     Owner int
+//     Level int
+// }
+var columns = [
+    "Id", "Time", "Title", "Introduction", "Keywords",
+    "Image", "Source", "Type", "Owner", "Level"];
+window.onload = async function() {
+    const resp = await fetch(`/api/lesson${window.location.search}`);
+    var lesson = await resp.json();
+    var list = document.querySelector("#lesson");
+    for (var i = 0; i < columns.length; ++i) {
+        var column = columns[i];
+        var li = document.createElement("li");
+        li.innerText = `${column}: ${lesson[column]}`;
+        list.appendChild(li);
+    }
+};
+</script>

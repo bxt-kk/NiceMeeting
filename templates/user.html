@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="stylesheet" href="/css/basic.css" type="text/css">
+        <title>User</title>
+    </head>
+    <body>
+        <nav id="menu" class="menu"></nav>
+        <main>
+            <section>
+                <div class="container user">
+                    <img id="user-picture"></img>
+                    <div id="user-profile" class="profile">
+                        <label>用戶名</label>
+                        <p f-name="Username"></p>
+                        <small>#</small><small f-name="Id"></small>
+                        <hr>
+                        <label>電子郵箱</label>
+                        <p f-name="Email"></p>
+                        <hr>
+                        <label>身份</label>
+                        <p id="level" f-name="Level" f-switch="普通;VIP;員工;管理員"></p>
+                        <hr>
+                        <label>個人簡介</label>
+                        <p f-name="Introduction"></p>
+                        <hr>
+                        <label>可用票券</label>
+                        <p f-name="Ticket"></p>
+                        <hr>
+                        <label>註冊時間</label>
+                        <time f-name="Time"></time>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <header>訂閱課程</header>
+                <div class="container gallery">
+                    <div id="course">
+                        <img f-name="Image" f-onclick="Id"/>
+                        <header f-name="Title" f-onclick="Id"></header>
+                        <summary f-name="Introduction"></summary>
+                        <time f-name="Time" style="float: right"></time>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <a id="goto" class="goto-btn">
+            <img src="/icon/down-chevron.png" alt=""/>
+        </a>
+        <center id="loading"></center>
+        <footer></footer>
+    </body>
+</html>
+<script src="/js/functions.js" charset="utf-8"></script>
+<script src="/js/modules.js" charset="utf-8"></script>
+<script charset="utf-8"> window.onload = fl_user; </script>

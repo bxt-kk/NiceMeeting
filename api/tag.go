@@ -1,4 +1,4 @@
-package handlers
+package api
 
 import (
     "log"
@@ -10,7 +10,7 @@ import (
     db "nicemeeting/db"
 )
 
-func HandlerTags(r *gin.RouterGroup) {
+func GetTags(r *gin.RouterGroup) {
     type Args struct {
         Size int64 `uri:"size"`
         Page int64 `uri:"page"`
@@ -32,8 +32,8 @@ func HandlerTags(r *gin.RouterGroup) {
     })
 }
 
-func HandlerAddTag(r *gin.RouterGroup) {
-    r.POST("/add/tag", func (c *gin.Context) {
+func AddTag(r *gin.RouterGroup) {
+    r.POST("/tag", func (c *gin.Context) {
         args := db.Tag{}
         if err := c.ShouldBindJSON(&args); err != nil {
             c.JSON(http.StatusBadRequest, gin.H{"desc": err})
@@ -67,8 +67,8 @@ func HandlerAddTag(r *gin.RouterGroup) {
     })
 }
 
-func HandlerDelTag(r *gin.RouterGroup) {
-    r.POST("/del/tag", func (c *gin.Context) {
+func DelTag(r *gin.RouterGroup) {
+    r.POST("/tag", func (c *gin.Context) {
         args := db.Tag{}
         if err := c.ShouldBindJSON(&args); err != nil {
             c.JSON(http.StatusBadRequest, gin.H{"desc": err})

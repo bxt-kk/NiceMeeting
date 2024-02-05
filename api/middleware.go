@@ -1,4 +1,4 @@
-package handlers
+package api
 
 import (
     "net/http"
@@ -17,12 +17,18 @@ func Sessions() gin.HandlerFunc {
 
 func Authorization() gin.HandlerFunc {
     return func (c *gin.Context) {
-        session := sessions.Default(c)
-        if session.Get("login") != "yes" {
-            c.AbortWithStatus(http.StatusUnauthorized)
+        if IsUnauthorized(c) {
             return
         }
-
         c.Next()
     }
+}
+
+func IsUnauthorized(c *gin.Context) bool {
+    session := sessions.Default(c)
+    if session.Get("login") != "yes" {
+        c.AbortWithStatus(http.StatusUnauthorized)
+        return true
+    }
+    return false
 }

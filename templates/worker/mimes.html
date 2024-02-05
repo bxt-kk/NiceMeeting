@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="stylesheet" href="/css/basic.css" type="text/css">
+        <title>Users</title>
+    </head>
+    <body>
+        <nav id="menu" class="menu"></nav>
+        <main>
+            <section>
+                <div class="container panel">
+                    <form onsubmit="return false;" accept-charset="utf-8">
+                        <div>
+                            <label>價值</label>
+                            <input type="number" name="count" id="count" value="1">
+                            <small>每個號碼的票券數目</small>
+                        </div>
+                        <div>
+                            <label>數量</label>
+                            <input type="number" name="total" id="total" value="12">
+                            <small>最大查詢數目</small>
+                        </div>
+                        <button class="button" onclick="search();">查詢</button>
+                        <button class="button" onclick="generate();">生成</button>
+                    </form>
+                    <table id="users" style="width:100%;">
+                        <tr>
+                            <th>號碼</th>
+                        </tr>
+                        <tr id="mine" class="rows" style="text-align: center;">
+                            <td f-name="Code"></td>
+                        </tr>
+                    </table> 
+                </div>
+            </section>
+        </main>
+        <a id="goto" class="goto-btn">
+            <img src="/icon/down-chevron.png" alt=""/>
+        </a>
+        <footer></footer>
+    </body>
+</html>
+<script src="/js/functions.js" charset="utf-8"></script>
+<script src="/js/modules.js" charset="utf-8"></script>
+<script charset="utf-8">
+var nodes = select_template('#mine');
+
+async function search() {
+    const count = document.querySelector('#count').value;
+    const total = document.querySelector('#total').value;
+    if (count < 1 || total < 1) {
+        alert('查詢參數不可爲`0`或空');
+        return;
+    }
+    const data = await load_mimes(count, total);
+    var mimes = [];
+    data.forEach((item) => { mimes.push({Code: item}); });
+    nodes.ptr.querySelectorAll('.rows').forEach(item => { item.remove(); });
+    extend_items(mimes, nodes.tpl, nodes.ptr);
+}
+
+async function generate() {
+    const count = document.querySelector('#count').value;
+    const total = document.querySelector('#total').value;
+    if (count < 1 || total < 1) {
+        alert('生成參數不可爲`0`或空');
+        return;
+    }
+    await make_mimes(count, total);
+    alert('已經生成新的票券獲取號碼');
+}
+
+window.onload = function() {
+    new_menu('#menu', [{href: '/courses.html', text: '課程'}]);
+    set_goto('#goto', 'nav');
+    set_height('main', 'footer');
+    search();
+};
+</script>

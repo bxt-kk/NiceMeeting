@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="stylesheet" href="/css/basic.css" type="text/css">
+        <title>Lessons</title>
+    </head>
+    <body>
+        <nav id="menu" class="menu"> </nav>
+        <main>
+            <section>
+                <header>課時</header>
+                <div class="container gallery">
+                    <div id="lesson">
+                        <img f-name="Image" f-onclick="Id"/>
+                        <header f-name="Title" f-onclick="Id"></header>
+                        <small>#</small><small f-name="Id"></small>
+                        <summary f-name="Introduction"></summary>
+                        <time f-name="Time" style="float: right"></time>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <a id="goto" class="goto-btn">
+            <img src="/icon/down-chevron.png" alt=""/>
+        </a>
+        <center id="loading"></center>
+        <footer></footer>
+    </body>
+</html>
+<script src="/js/functions.js" charset="utf-8"></script>
+<script src="/js/modules.js" charset="utf-8"></script>
+<script charset="utf-8"> window.onload = fl_lessons; </script>

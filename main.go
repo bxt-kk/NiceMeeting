@@ -8,7 +8,7 @@ import (
     "github.com/gin-gonic/gin"
 
     db "nicemeeting/db"
-    hd "nicemeeting/handlers"
+    api "nicemeeting/api"
 )
 
 func main() {
@@ -34,20 +34,27 @@ func main() {
 
     router := gin.Default()
     router.SetTrustedProxies(nil)
-    router.Use(hd.Sessions())
+    router.Use(api.Sessions())
 
-    common := router.Group("/")
-    authorized := router.Group("/auth", hd.Authorization())
+    router.LoadHTMLGlob("./templates/*.html")
+    router.Static("/static", "./static")
 
-    hd.HandlerUser(common)
-    hd.HandlerTags(common)
-    hd.HandlerMeetings(common)
-    hd.HandlerMeetingsByTag(common)
-    hd.HandlerLinksByIds(common)
+    page := router.Group("/")
+    // authorized := api.Group("/auth", api.Authorization())
 
-    authorized.GET("/try", func (c *gin.Context) {
-        c.IndentedJSON(http.StatusOK, gin.H{"hello": "world"})
+    api.Setup(router, "api")
+    page.GET("/", func (c *gin.Context) {
+        c.HTML(http.StatusOK, "index.html", gin.H{
+            "title": "index", "try": []string{"a", "b", "c"}})
     })
+
+    page.GET("/try", func (c *gin.Context) {
+        c.YAML(http.StatusOK, []struct{
+            Name string `yaml:"name"`
+            Age int64 `yaml:"age"`}{
+            {"kk", 13},
+            {"jojo", 14},
+        })})
 
     router.Run("localhost:8080")
 }

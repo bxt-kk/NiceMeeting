@@ -1,0 +1,513 @@
+:root {
+  --base00: #2d2d2d;
+  --base01: #393939;
+  --base02: #515151;
+  --base03: #747369;
+  --base04: #a09f93;
+  --base05: #d3d0c8;
+  --base06: #e8e6df;
+  --base07: #f2f0ec;
+  --base08: #f2777a;
+  --base09: #f99157;
+  --base0a: #ffcc66;
+  --base0b: #99cc99;
+  --base0c: #66cccc;
+  --base0d: #6699cc;
+  --base0e: #cc99cc;
+  --base0f: #d27b53;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+nav.menu {
+    padding: 0 5%;
+    height: 4rem;
+    background-color: var(--base07);
+    border-bottom: 1px solid var(--base05);
+}
+
+@media (max-width: 36em) {
+    nav.menu {
+        padding: 0 3% 0 1%;
+    }
+}
+
+nav > a {
+    text-decoration: none;
+}
+
+nav > a.menu-logo > img {
+    float: left;
+    margin-left: 1em;
+    margin-top: 0.5rem;
+    max-height: 3rem;
+    width: auto;
+}
+
+@media (max-width: 36em) {
+    nav > a.menu-logo > img {
+        margin-left: 0;
+    }
+}
+
+nav > a.menu-title {
+    float: left;
+    font-size: 1.4rem;
+    color: var(--base03);
+    padding: 1.3rem 0 1rem 0;
+}
+
+nav > a.menu-item {
+    float: right;
+    padding: 1.3rem 0.5rem 1rem 0.5rem;
+    color: var(--base03);
+}
+
+nav > a.menu-item:hover {
+    color: var(--base00);
+}
+
+footer {
+    margin-top: 1em;
+    padding: 0 5%;
+    height: 10em;
+    background-color: var(--base07);
+}
+
+main {
+    /* padding: 0.5em 5% 0.5em 5%; */
+}
+
+section {
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 1em;
+}
+
+section > header {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 0.5rem 0;
+}
+
+.container {
+    display: grid;
+    grid-auto-rows: minmax(1em, auto);
+    margin: 1em 0;
+}
+
+div.gallery {
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1em;
+}
+
+@media (max-width: 54em) {
+    div.gallery {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 36em) {
+    div.gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+div.gallery > div {
+    box-shadow: 5px 5px 5px var(--base04);
+    padding-bottom: 0.5em;
+}
+
+div.gallery > div:hover {
+    background-color: var(--base07);
+}
+
+div.gallery > div > img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+}
+
+div.gallery > div > header {
+    display: inline-block;
+    color: var(--base0d);
+    font-weight: bold;
+    font-size: large;
+    padding: 0.1rem 0 0.1rem 1rem;
+}
+
+div.gallery > div:hover > header {
+    color: #5689bc;
+}
+
+div.gallery > div > summary {
+    color: var(--base03);
+    padding: 0.1rem 1rem;
+    font-size: smaller;
+}
+
+div.gallery > div > time {
+    color: var(--base03);
+    font-size: small;
+    padding: 0.1rem 1rem;
+}
+
+div.gallery > div > small {
+    color: var(--base03);
+    font-size: small;
+}
+
+.goto-btn {
+    position: fixed;
+    right: 2.5em;
+    bottom: 4.5em;
+    cursor: pointer;
+    z-index: 1000;
+    background-color: var(--base0d);
+    padding: 8px 11px;
+    border-radius: 100%;
+    box-shadow: 1px 2px 4px var(--base04);
+    visibility: hidden;
+}
+
+.goto-btn:hover {
+    background-color: #5689bc;
+}
+
+.goto-btn > img {
+    width: 42px;
+    height: 42px;
+}
+
+div.tags {
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 0.5rem 0;
+    padding-bottom: 0.5rem;
+    max-height: 20rem;
+    overflow-y: auto;
+}
+
+div.tags > a {
+    text-align: center;
+    text-decoration: none;
+    padding: 0.5rem 0;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    border-radius: 1rem;
+    border: 2px solid var(--base0d);
+    color: var(--base0d);
+    font-weight: bold;
+}
+
+div.tags > a:hover {
+    background-color: var(--base0d);
+    color: var(--base07);
+    border-color: #5689bc;
+}
+
+div.tags > a.selected {
+    background-color: var(--base0d);
+    color: var(--base07);
+    border-color: #5689bc;
+}
+
+form {
+    width: 30em;
+    margin: 0 auto;
+}
+
+@media (max-width: 36em) {
+    form {
+        width: 15em;
+    }
+}
+
+form > div {
+    margin: 0.5rem 0;
+    width: 100%;
+}
+
+form > input {
+    margin: 0.5rem 0;
+}
+
+form > div > label {
+    font-size: large;
+    color: var(--base01);
+}
+
+form > div > small {
+    color: var(--base02);
+}
+
+form > div > input {
+    width: 100%;
+    min-height: 1.2rem;
+}
+
+form > div > input:focus {
+    box-shadow: 1px 2px 4px grey;
+}
+
+form > div > select {
+    height: 1.8rem;
+    padding: 0 0.5rem;
+}
+
+table {
+    padding: 1em;
+    box-shadow: 1px 2px 4px 1px grey;
+}
+
+th {
+    color: white;
+    background-color: grey;
+    box-shadow: 0px 0px 1px 2px black;
+}
+
+td {
+    box-shadow: 0px 0px 2px 1px gray;
+}
+
+.button {
+    border: 1px solid var(--base0d);
+    padding: 0.15rem 1rem 0.3rem 1rem;
+    cursor: pointer;
+    background-color: var(--base0d);
+    color: white;
+    font-size: large;
+    text-align: center;
+}
+
+a.button {
+    padding: 0.5rem 1rem 0.4rem 1rem;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: white;
+    color: var(--base0d);
+}
+
+div.card {
+    grid-template-columns: 4fr 3fr;
+    grid-gap: 1em 2em;
+    border: 1px solid grey;
+    box-shadow: 1px 2px 4px 1px grey;
+    padding: 1rem;
+}
+
+@media (max-width: 54em) {
+    div.card {
+        grid-template-columns: 1fr;
+        padding: 0.5rem;
+    }
+}
+
+div.card > div > header {
+    display: unset;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+div.card > div > small {
+    font-weight: bold;
+    color: grey;
+}
+
+div.card > div > a {
+    float: right;
+    text-align: center;
+    text-decoration: none;
+    padding: 0.1rem 1rem 0.2rem 1rem;
+    margin: 0.5rem;
+    border-radius: 1rem;
+    border: 2px solid var(--base0d);
+    background-color: var(--base0d);
+    color: var(--base07);
+    font-weight: bold;
+}
+
+div.card > div > a:hover {
+    background-color: white;
+    color: var(--base0d);
+    border-color: #5689bc;
+}
+
+div.card > div > time {
+    color: var(--base02);
+    padding: 0.1rem 1rem;
+}
+
+div.user {
+    width: 60%;
+    margin: 1rem 15% 0 15%;
+    padding: 2rem 5% 3rem 5%;
+    grid-template-columns: 3fr 4fr;
+    grid-gap: 1em 2em;
+
+    background-color: var(--base07);
+    border: 1px solid var(--base05);
+    border-radius: 10px;
+    box-shadow: 0px 0px 3px 1px var(--base05);
+}
+
+@media (max-width: 54em) {
+    div.user {
+        width: 80%;
+        margin: 1rem 5% 0 5%;
+        padding: 0 5% 1rem 5%;
+        grid-template-columns: 1fr;
+    }
+}
+
+div.user > img {
+    margin: 1rem auto;
+    width: 80%;
+    border-radius: 50%;
+    border: 3px solid var(--base05);
+    background-color: white;
+}
+
+@media (max-width: 54em) {
+    div.user > img {
+        width: 60%;
+    }
+}
+
+div.profile > label {
+    display: block;
+    padding: 0.5rem 0;
+    font-size: large;
+    color: var(--base01);
+}
+
+div.profile > small {
+    color: var(--base02);
+}
+
+div.profile > p {
+    display: inline;
+    padding: 0.25rem 0 0 0.1rem;
+}
+
+div.panel {
+    width: 80%;
+    margin: 1rem 5% 0 5%;
+    padding: 2rem 5% 3rem 5%;
+    grid-template-columns: 3fr 4fr;
+    grid-gap: 1em 2em;
+
+    background-color: var(--base07);
+    border: 1px solid var(--base05);
+    border-radius: 10px;
+    box-shadow: 0px 0px 3px 1px var(--base05);
+}
+
+div.panel > form {
+    width: auto;
+}
+
+@media (max-width: 54em) {
+    div.panel {
+        margin: 1rem 5% 0 5%;
+        padding: 0 5% 1rem 5%;
+        grid-template-columns: 1fr;
+        grid-gap: 1em 0em;
+    }
+    div.panel > form {
+        width: 90%;
+    }
+}
+
+/* loading animation */
+.lds-default {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-default div {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: grey;
+  border-radius: 50%;
+  animation: lds-default 1.2s linear infinite;
+}
+.lds-default div:nth-child(1) {
+  animation-delay: 0s;
+  top: 37px;
+  left: 66px;
+}
+.lds-default div:nth-child(2) {
+  animation-delay: -0.1s;
+  top: 22px;
+  left: 62px;
+}
+.lds-default div:nth-child(3) {
+  animation-delay: -0.2s;
+  top: 11px;
+  left: 52px;
+}
+.lds-default div:nth-child(4) {
+  animation-delay: -0.3s;
+  top: 7px;
+  left: 37px;
+}
+.lds-default div:nth-child(5) {
+  animation-delay: -0.4s;
+  top: 11px;
+  left: 22px;
+}
+.lds-default div:nth-child(6) {
+  animation-delay: -0.5s;
+  top: 22px;
+  left: 11px;
+}
+.lds-default div:nth-child(7) {
+  animation-delay: -0.6s;
+  top: 37px;
+  left: 7px;
+}
+.lds-default div:nth-child(8) {
+  animation-delay: -0.7s;
+  top: 52px;
+  left: 11px;
+}
+.lds-default div:nth-child(9) {
+  animation-delay: -0.8s;
+  top: 62px;
+  left: 22px;
+}
+.lds-default div:nth-child(10) {
+  animation-delay: -0.9s;
+  top: 66px;
+  left: 37px;
+}
+.lds-default div:nth-child(11) {
+  animation-delay: -1s;
+  top: 62px;
+  left: 52px;
+}
+.lds-default div:nth-child(12) {
+  animation-delay: -1.1s;
+  top: 52px;
+  left: 62px;
+}
+@keyframes lds-default {
+  0%, 20%, 80%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+}

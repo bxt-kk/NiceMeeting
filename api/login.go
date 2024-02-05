@@ -1,4 +1,4 @@
-package handlers
+package api
 
 import (
     "log"
@@ -10,7 +10,7 @@ import (
     db "nicemeeting/db"
 )
 
-func HandlerRegister(r *gin.RouterGroup) {
+func Register(r *gin.RouterGroup) {
     r.POST("/register", func (c *gin.Context) {
         args := db.User{}
         if err := c.ShouldBindJSON(&args); err != nil {
@@ -28,7 +28,7 @@ func HandlerRegister(r *gin.RouterGroup) {
     })
 }
 
-func HandlerLogin(r *gin.RouterGroup) {
+func Login(r *gin.RouterGroup) {
     type Args struct {
         Email    string `json:"email"`
         Password string `json:"password"`
@@ -61,7 +61,7 @@ func HandlerLogin(r *gin.RouterGroup) {
     })
 }
 
-func HandlerLogout(r *gin.RouterGroup) {
+func Logout(r *gin.RouterGroup) {
     r.GET("/logout", func (c *gin.Context) {
         session := sessions.Default(c)
         session.Clear()
