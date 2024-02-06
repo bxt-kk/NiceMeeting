@@ -15,9 +15,9 @@ func AddTag(ctx context.Context, tag Tag) (int64, error) {
     return commonExec(ctx, query, tag.MeetingId, tag.Label)
 }
 
-func DelTag(ctx context.Context, meeting_id int64, label string) (int64, error) {
-    query := `delete from tag where meeting_id = ? and label = ?`
-    return commonExec(ctx, query, meeting_id, label)
+func DelTag(ctx context.Context, id, meeting_id int64) (int64, error) {
+    query := `delete from tag where id = ? and meeting_id = ?`
+    return commonExec(ctx, query, id, meeting_id)
 }
 
 func GetTags(

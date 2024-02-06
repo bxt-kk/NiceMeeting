@@ -75,7 +75,7 @@ func TestGetTags(t *testing.T) {
     if err != nil {
         t.Error(err)
     }
-    log.Println(tags)
+    log.Println(len(tags))
 }
 
 func TestGetMeetingsByTag(t *testing.T) {
@@ -83,5 +83,5 @@ func TestGetMeetingsByTag(t *testing.T) {
     if err != nil {
         t.Error(err)
     }
-    log.Println(tags)
+    log.Println(len(tags))
 }
