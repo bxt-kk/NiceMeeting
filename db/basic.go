@@ -52,18 +52,22 @@ func commonScanRow(row *sql.Row, dst ...any) error {
 }
 
 func getRows(
-        ctx    context.Context,
-        query  string,
-        limit  int64,
-        offset int64,
-        where  string,
-        args   ...any,
+        ctx      context.Context,
+        query    string,
+        limit    int64,
+        offset   int64,
+        order_by string,
+        where    string,
+        args     ...any,
     ) (*sql.Rows, error) {
 
     if where != "" {
         query = fmt.Sprintf("%s where %s", query, where)
     }
-    query = fmt.Sprintf("%s order by id desc", query)
+    if order_by == "" {
+        order_by = "id"
+    }
+    query = fmt.Sprintf("%s order by %s desc", query, order_by)
     if limit != 0 {
         query = fmt.Sprintf("%s limit %d offset %d", query, limit, offset)
     }

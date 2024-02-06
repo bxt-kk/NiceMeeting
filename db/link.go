@@ -48,13 +48,13 @@ func GetLinks(
     ) ([]Link, error) {
 
     query := `select id, from_id, to_id, description from link`
-    rows, err := getRows(ctx, query, limit, offset, where, args...)
+    rows, err := getRows(ctx, query, limit, offset, "", where, args...)
     if err != nil {
         return nil, err
     }
     defer rows.Close()
 
-    var items []Link
+    items := []Link{}
     for rows.Next() {
         var item Link
         if err := rows.Scan(

@@ -50,6 +50,11 @@ func Login(r *gin.RouterGroup) {
             c.JSON(http.StatusNotFound, gin.H{"desc": "email or password do not march"})
             return
         }
+        if _, err = db.UpdateLoginTime(c, user); err != nil {
+            c.JSON(http.StatusInternalServerError, gin.H{"desc": "internal server error"})
+            log.Panic(err)
+            return
+        }
         session := sessions.Default(c)
         session.Set("hash_id", hashId(user.Id))
         session.Set("login", "yes")

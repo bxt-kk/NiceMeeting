@@ -5,7 +5,7 @@ function new_menu(id, items=[]) {
     link.setAttribute('href', '/');
     node.append(link);
     var logo = document.createElement('IMG');
-    logo.setAttribute('src', '/logo/Golang.png');
+    logo.setAttribute('src', '/static/logo/logo.png');
     link.append(logo);
     var head = document.createElement('A');
     head.classList.add('menu-title');
@@ -19,13 +19,13 @@ function new_menu(id, items=[]) {
         item.classList.add('menu-item');
         if (localStorage.getItem('fl-login') != 'true') {
             item.setAttribute('href', '/login.html');
-            item.innerText = '登錄|註冊';
+            item.innerText = 'Login|Signup';
         } else if (path == '/user.html'){
             item.setAttribute('href', '/api/logout');
-            item.innerText = '登出';
+            item.innerText = 'Logout';
         } else {
             item.setAttribute('href', '/user.html');
-            item.innerText = '個人主頁';
+            item.innerText = 'Personal Homepage';
         }
     }
     items.forEach(item => {
@@ -37,8 +37,10 @@ function new_menu(id, items=[]) {
     });
 }
 
-async function fl_index(categories) {
-    new_menu('#menu', [{href: '/courses.html', text: '課程'}]);
+window.NiceMeetingModules = {}
+
+NiceMeetingModules['/'] = NiceMeetingModules['/index.html'] = async function(categories) {
+    new_menu('#menu', [{href: '/courses.html', text: 'Courses'}]);
     set_goto('#goto', 'nav');
 
     var classes = document.querySelector('#classes');
@@ -46,18 +48,20 @@ async function fl_index(categories) {
     categories.forEach((category, i) => {
         var tag = document.createElement('a');
         tag.innerText = category;
-        tag.href = '/courses.html';
+        tag.href = '/meeting.html';
         if (i > 0) tag.href += `?category=${category}`;
         tags.append(tag);
     });
 
-    var tpl = select_template('#course').tpl;
-    var nodes = select_template('#courses');
+    var tpl = select_template('#meeting').tpl;
+    var nodes = select_template('#meetings');
     for (let i = 1; i < categories.length; ++i) {
         var section = nodes.tpl.cloneNode(true)
         nodes.ptr.append(section);
         const category = categories[i];
-        const data = await load_courses(0, 12, category);
+        const data = await load_meetings(1, 12, category);
+        console.log(data);
+        break;
         section.querySelector('header').innerText = category;
         var ptr = section.querySelector('.gallery');
         extend_items(data.Courses, tpl, ptr, function(id) {
@@ -231,12 +235,12 @@ async function fl_lessons() {
     };
 }
 
-function fl_login() {
-    new_menu('#menu', [{href: '/courses.html', text: '課程'}, {href: '/', text: '首頁'}]);
+NiceMeetingModules['/login.html'] = function() {
+    new_menu('#menu', [{href: '/courses.html', text: 'Courses'}, {href: '/', text: 'Home'}]);
     check_logout();
 }
 
-function fl_signup() {
+NiceMeetingModules['/signup.html'] = function() {
     new_menu('#menu', [{href: '/courses.html', text: '課程'}, {href: '/', text: '首頁'}]);
 }
 
@@ -244,25 +248,27 @@ function fl_mining() {
     new_menu('#menu', [{href: '/courses.html', text: '課程'}]);
 }
 
-async function fl_user() {
-    new_menu('#menu', [{href: '/courses.html', text: '課程'}]);
+NiceMeetingModules['/user.html'] = async function(categories) {
+    new_menu('#menu', [{href: '/courses.html', text: 'Courses'}]);
     set_height('main', 'footer');
     set_goto('#goto', 'nav');
 
     const user = await load_user();
+    console.log(user);
     var columns = document.querySelector('#user-profile').children;
     extend_columns(user, columns, null);
-    var src = `https://avatars.dicebear.com/api/big-smile/${user.Username}.svg`;
+    var src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${user.name}`;
     document.querySelector('#user-picture').src = src;
-    if (user.Level > 1) {
+    if (localStorage.getItem('nm-user-level') > 1) {
         const elem = document.querySelector('#level');
         const link = document.createElement('a');
         elem.append(link);
-        link.href = '/worker/index.html';
-        link.innerText = '#點擊進入工作頁';
+        link.href = '/admin/index.html';
+        link.innerText = '#Click go to work page';
         link.style.marginLeft = '0.1rem';
         link.style.fontSize = 'small';
     }
+    return;
 
     set_loading('#loading');
     var data = await load_likes();

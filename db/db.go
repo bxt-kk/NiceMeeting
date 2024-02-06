@@ -9,7 +9,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-
 var (
     SECURITY_KEY         = "xxx"
     DB_FILE              = "./nm.db"

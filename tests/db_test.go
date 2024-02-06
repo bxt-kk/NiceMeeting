@@ -69,3 +69,19 @@ func TestGetUsersTotal(t *testing.T) {
         t.Errorf("total of users not marched")
     }
 }
+
+func TestGetTags(t *testing.T) {
+    tags, err := db.GetTags(nil, 0, 0, "")
+    if err != nil {
+        t.Error(err)
+    }
+    log.Println(tags)
+}
+
+func TestGetMeetingsByTag(t *testing.T) {
+    tags, err := db.GetMeetingsByTag(nil, 0, 0, "kk")
+    if err != nil {
+        t.Error(err)
+    }
+    log.Println(tags)
+}

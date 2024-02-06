@@ -38,7 +38,7 @@ func Setup(r *gin.Engine, path string) {
     DelMeeting(del)
 
     // tag
-    GetTags(api)
+    // GetTags(api)
     AddTag(add)
     DelTag(del)
 

@@ -93,7 +93,7 @@ func DelTag(r *gin.RouterGroup) {
             return
         }
 
-        if _, err := db.DelTag(c, args.Id, meeting_id); err != nil {
+        if _, err := db.DelTag(c, meeting_id, args.Label); err != nil {
             c.JSON(http.StatusInternalServerError, gin.H{"desc": "internal server error"})
             log.Panic(err)
             return

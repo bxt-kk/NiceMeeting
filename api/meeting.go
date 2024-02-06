@@ -59,9 +59,9 @@ func GetMeetings(r *gin.RouterGroup) {
 
 func GetMeetingsByTag(r *gin.RouterGroup) {
     type Args struct {
-        Size int64 `json:"size"`
-        Page int64 `json:"page"`
-        Tag  string `json:"tag"`
+        Size int64 `uri:"size"`
+        Page int64 `uri:"page"`
+        Tag  string `uri:"tag"`
     }
     r.GET("/meetings/:size/:page/:tag", func(c *gin.Context) {
         args := Args{}

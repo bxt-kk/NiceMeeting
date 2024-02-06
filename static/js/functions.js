@@ -40,7 +40,7 @@ function extend_columns(data, columns, onclick) {
                     column.src = `/img/${value}`;
                     break;
                 case 'TIME':
-                    const time = new Date(value * 1000).toLocaleDateString();
+                    const time = new Date(value * 1000).toLocaleString();
                     column.setAttribute('datetime', time);
                     column.innerText = time;
                     break;
@@ -72,13 +72,38 @@ function extend_items(items, template, container, onclick=null) {
     });
 }
 
+function send_by_form(next, id="") {
+    if (id === "") {
+        var form = document.querySelector('form');
+    } else {
+        var form = document.getElementById(id);
+    }
+    var formData = new FormData(form);
+    var jsonData = JSON.stringify(Object.fromEntries(formData));
+    fetch(form.action, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: jsonData,
+    }).then(
+        resp => resp.json()
+    ).then(data => {
+        if (location.pathname == "/login.html") {
+            next = `${next}?id=${data.id}`;
+            localStorage.setItem('nm-user-id', `${data.id}`);
+            localStorage.setItem('nm-user-level', `${data.level}`);
+        }
+        if (next !== "") location.href = next;
+    });
+    return false;
+}
+
 async function load_course(id) {
     const resp = await fetch(`/api/course?id=${id}`);
     return await resp.json();
 }
 
-async function load_courses(page, size, category='') {
-    const resp = await fetch(`/api/courses?page=${page}&size=${size}&category=${category}`);
+async function load_meetings(page, size, category='') {
+    const resp = await fetch(`/api/meetings/${size}/${page}/${category}`);
     return await resp.json();
 }
 
@@ -103,13 +128,11 @@ async function load_users(page, size) {
 }
 
 async function load_user() {
-    const resp = await fetch(`/api/user`);
+    var id = (new URLSearchParams(location.search)).get('id') || '0';
+    const resp = await fetch(`/api/user/${id}`);
     if (resp.status == 403) {
         location.href = '/login.html';
         return;
-    }
-    if (resp.ok) {
-        localStorage.setItem('fl-login', true);
     }
     return await resp.json();
 }

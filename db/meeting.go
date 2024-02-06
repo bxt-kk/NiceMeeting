@@ -79,13 +79,13 @@ func GetMeetings(
     query := `select
     id, title, owner_id, status, creation_time, last_edited_time
     from meeting`
-    rows, err := getRows(ctx, query, limit, offset, where, args...)
+    rows, err := getRows(ctx, query, limit, offset, "", where, args...)
     if err != nil {
         return nil, err
     }
     defer rows.Close()
 
-    var items []Meeting
+    items := []Meeting{}
     for rows.Next() {
         var item Meeting
         if err := rows.Scan(
@@ -130,16 +130,16 @@ func GetMeetingsByTag(
     ) ([]Meeting, error) {
 
     query := `select
-    id, title, owner_id, status, creation_time, last_edited_time
+    meeting.id, title, owner_id, status, creation_time, last_edited_time
     from meeting inner join tag on
     meeting.id = tag.meeting_id and tag.label = ?`
-    rows, err := getRows(ctx, query, limit, offset, "", tag)
+    rows, err := getRows(ctx, query, limit, offset, "tag.id", "", tag)
     if err != nil {
         return nil, err
     }
     defer rows.Close()
 
-    var items []Meeting
+    items := []Meeting{}
     for rows.Next() {
         var item Meeting
         if err := rows.Scan(

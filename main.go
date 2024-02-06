@@ -1,14 +1,17 @@
 package main
 
 import (
-    "fmt"
-    "flag"
-    "net/http"
+	"flag"
+	"fmt"
+	"log"
 
-    "github.com/gin-gonic/gin"
+	// "net/http"
 
-    db "nicemeeting/db"
-    api "nicemeeting/api"
+	"github.com/gin-gonic/gin"
+
+	api "nicemeeting/api"
+	db "nicemeeting/db"
+	page "nicemeeting/page"
 )
 
 func main() {
@@ -25,36 +28,23 @@ func main() {
             Name: *username,
             Email: *email,
             Password: *password,
+            Level: 2,
         })
     }
 
     fmt.Println("Hello Nice-Meeting!")
 
-    db.Connect()
+    err := db.Connect()
+    if err != nil {
+        log.Fatal(err)
+    }
 
     router := gin.Default()
     router.SetTrustedProxies(nil)
     router.Use(api.Sessions())
 
-    router.LoadHTMLGlob("./templates/*.html")
-    router.Static("/static", "./static")
-
-    page := router.Group("/")
-    // authorized := api.Group("/auth", api.Authorization())
-
     api.Setup(router, "api")
-    page.GET("/", func (c *gin.Context) {
-        c.HTML(http.StatusOK, "index.html", gin.H{
-            "title": "index", "try": []string{"a", "b", "c"}})
-    })
-
-    page.GET("/try", func (c *gin.Context) {
-        c.YAML(http.StatusOK, []struct{
-            Name string `yaml:"name"`
-            Age int64 `yaml:"age"`}{
-            {"kk", 13},
-            {"jojo", 14},
-        })})
+    page.Setup(router, "/")
 
     router.Run("localhost:8080")
 }

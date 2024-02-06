@@ -17,8 +17,8 @@ type User struct {
 
 func AddUser(ctx context.Context, user User) (int64, error) {
     query := `insert into
-    user(name, email, password, status, registration_time)
-    values(?, ?, ?, ?, ?)
+    user(name, email, password, status, registration_time, level)
+    values(?, ?, ?, ?, ?, ?)
     `
     return commonExec(ctx, query,
         user.Name,
@@ -26,6 +26,7 @@ func AddUser(ctx context.Context, user User) (int64, error) {
         HashString(user.Password),
         user.Status,
         nowUnix(),
+        user.Level,
     )
 }
 
@@ -82,7 +83,7 @@ func UpdateLoginTime(ctx context.Context, user User) (int64, error) {
 
 func GetUserById(ctx context.Context, id int64) (User, error) {
     query := `select
-    id, name, email, password, status, registration_time, last_login_time
+    id, name, email, password, status, registration_time, last_login_time, level
     from user where id = ?
     `
     row := adaptiveQueryRow(ctx, query, id)
@@ -96,6 +97,7 @@ func GetUserById(ctx context.Context, id int64) (User, error) {
         &user.Status,
         &user.RegistrationTime,
         &user.LastLoginTime,
+        &user.Level,
     )
     return user, err
 }
@@ -108,7 +110,7 @@ func GetUserByIdSafe(ctx context.Context, id int64) (User, error) {
 
 func GetUserForLogin(ctx context.Context, email , password string) (User, error) {
     query := `select
-    id, name, email, status, registration_time, last_login_time
+    id, name, email, status, registration_time, last_login_time, level
     from user where email = ? and password = ?
     `
     row := adaptiveQueryRow(ctx, query, email, HashString(password))
@@ -121,6 +123,7 @@ func GetUserForLogin(ctx context.Context, email , password string) (User, error)
         &user.Status,
         &user.RegistrationTime,
         &user.LastLoginTime,
+        &user.Level,
     )
     return user, err
 }
@@ -136,13 +139,13 @@ func GetUsers(
     query := `select
     id, name, email, status, registration_time, last_login_time
     from user`
-    rows, err := getRows(ctx, query, limit, offset, where, args...)
+    rows, err := getRows(ctx, query, limit, offset, "", where, args...)
     if err != nil {
         return nil, err
     }
     defer rows.Close()
 
-    var items []User
+    items := []User{}
     for rows.Next() {
         var item User
         if err := rows.Scan(

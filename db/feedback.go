@@ -50,13 +50,13 @@ func GetFeedBacks(
 
     query := `select
     id, audience_id, meeting_id, type, value, time from feedback`
-    rows, err := getRows(ctx, query, limit, offset, where, args...)
+    rows, err := getRows(ctx, query, limit, offset, "", where, args...)
     if err != nil {
         return nil, err
     }
     defer rows.Close()
 
-    var items []FeedBack
+    items := []FeedBack{}
     for rows.Next() {
         var item FeedBack
         if err := rows.Scan(

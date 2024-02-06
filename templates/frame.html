@@ -3,8 +3,8 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width" />
-        <link rel="stylesheet" href="/static/basic.css" type="text/css">
-        <title>{{ .title }}</title>
+        <link rel="stylesheet" href="/static/css/basic.css" type="text/css">
+        <title>{{ .page.title }}</title>
     </head>
     <body>
         <nav id="menu" class="menu"></nav>
@@ -18,7 +18,12 @@
         <footer></footer>
     </body>
 </html>
-<script src="/static/functions.js" charset="utf-8"></script>
-<script src="/static/modules.js" charset="utf-8"></script>
-[{{ range .try }}"{{ . }}",{{ end }}]
+<script src="/static/js/functions.js" charset="utf-8"></script>
+<script src="/static/js/modules.js" charset="utf-8"></script>
+<script charset="utf-8">
+const categories = ['全部', '語文' ,'數學', '英語', '物理'];
+window.onload = async function() {
+    NiceMeetingModules[window.location.pathname](categories);
+};
+</script>
 {{ end }}
