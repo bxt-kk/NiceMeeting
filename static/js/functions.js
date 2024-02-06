@@ -37,12 +37,16 @@ function extend_columns(data, columns, onclick) {
             var value = data[name];
             switch (column.tagName) {
                 case 'IMG':
-                    column.src = `/img/${value}`;
+                    // column.src = `/img/${value}`;
+                    column.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=meeting`;
                     break;
                 case 'TIME':
                     const time = new Date(value * 1000).toLocaleString();
                     column.setAttribute('datetime', time);
                     column.innerText = time;
+                    break;
+                case 'SUMMARY':
+                    column.innerText = value.slice(0, 32);
                     break;
                 default:
                     column.innerText = value;
@@ -97,8 +101,8 @@ function send_by_form(next, id="") {
     return false;
 }
 
-async function load_course(id) {
-    const resp = await fetch(`/api/course?id=${id}`);
+async function load_meeting(id) {
+    const resp = await fetch(`/api/meeting/${id}`);
     return await resp.json();
 }
 

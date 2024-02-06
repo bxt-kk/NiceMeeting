@@ -30,4 +30,16 @@ var pages = []Page{
             "title": "Signup",
         },
     },
+    {
+        Template: "meetings.html",
+        Data: map[string]string{
+            "title": "Meetings",
+        },
+    },
+    {
+        Template: "meeting.html",
+        Data: map[string]string{
+            "title": "Meeting",
+        },
+    },
 }

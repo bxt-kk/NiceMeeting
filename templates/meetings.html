@@ -1,0 +1,17 @@
+{{ template "head" . }}
+            <section id="classes" style="max-width: 60%">
+                <header>Meeting</header>
+                <div class="container tags"></div>
+            </section>
+            <section>
+                <div class="container gallery">
+                    <div id="meeting">
+                        <img f-name="image" f-onclick="id"/>
+                        <header f-name="title" f-onclick="id"></header>
+                        <small>#</small><small f-name="id"></small>
+                        <summary f-name="content"></summary>
+                        <time f-name="last_edited_time" style="float: right"></time>
+                    </div>
+                </div>
+            </section>
+{{ template "tail" . }}

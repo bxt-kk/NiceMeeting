@@ -1,0 +1,34 @@
+{{ template "head" . }}
+<section>
+    <div class="container card">
+        <div id="lesson">
+            <div id="player" style="width:100%"></div>
+            <header f-name="Title"></header>
+            <small>#</small><small f-name="Id"></small>
+            <hr>
+            <p f-name="introduction"></p>
+        </div>
+        <div id="meeting">
+            <header f-name="Title"></header>
+            <small>#</small><small f-name="Id"></small>
+            <a id="follow" style="cursor: pointer"></a>
+            <hr>
+            <p f-name="Introduction"></p>
+            <div id="index" class="container tags"></div>
+            <time f-name="Time" style="float: right"></time>
+        </div>
+    </div>
+</section>
+<section>
+    <header>課時</header>
+    <div class="container gallery">
+        <div id="lesson-item">
+            <img f-name="Image" f-onclick="Id"/>
+            <header f-name="Title" f-onclick="Id"></header>
+            <small>#</small><small f-name="Id"></small>
+            <summary f-name="Introduction"></summary>
+            <time f-name="Time" style="float: right"></time>
+        </div>
+    </div>
+</section>
+{{ template "tail" . }}

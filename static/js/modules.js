@@ -48,7 +48,7 @@ NiceMeetingModules['/'] = NiceMeetingModules['/index.html'] = async function(cat
     categories.forEach((category, i) => {
         var tag = document.createElement('a');
         tag.innerText = category;
-        tag.href = '/meeting.html';
+        tag.href = '/meetings.html';
         if (i > 0) tag.href += `?category=${category}`;
         tags.append(tag);
     });
@@ -61,31 +61,30 @@ NiceMeetingModules['/'] = NiceMeetingModules['/index.html'] = async function(cat
         const category = categories[i];
         const data = await load_meetings(1, 12, category);
         console.log(data);
-        break;
         section.querySelector('header').innerText = category;
         var ptr = section.querySelector('.gallery');
-        extend_items(data.Courses, tpl, ptr, function(id) {
-            location.href = `/course.html?id=${id}`;
+        extend_items(data, tpl, ptr, function(id) {
+            location.href = `/meeting.html?id=${id}`;
         });
     }
 }
 
-async function fl_courses(categories) {
+NiceMeetingModules['/meetings.html'] = async function(categories) {
     const category = (new URLSearchParams(location.search)).get('category') || '';
-    var nodes = select_template('#course');
+    var nodes = select_template('#meeting');
     window.PAGE = 0;
 
     async function load_more() {
         set_loading('#loading');
-        var data = await load_courses(window.PAGE++, 4, category);
+        var data = await load_meetings(window.PAGE++, 4, category);
         del_loading('#loading');
-        extend_items(data.Courses, nodes.tpl, nodes.ptr, function(id) {
-            location.href = `/course.html?id=${id}`;
+        extend_items(data, nodes.tpl, nodes.ptr, function(id) {
+            location.href = `/meeting.html?id=${id}`;
         });
         return data.Total > window.PAGE;
     }
 
-    new_menu('#menu', [{href: '/', text: '首頁'}]);
+    new_menu('#menu', [{href: '/', text: 'Home'}]);
     set_goto('#goto', 'nav');
     set_height('main', 'footer');
 
@@ -97,7 +96,7 @@ async function fl_courses(categories) {
         var tag = document.createElement('a');
         tags.append(tag);
         tag.innerText = item;
-        tag.href = '/courses.html';
+        tag.href = '/meetings.html';
         if (i > 0) tag.href += `?category=${item}`;
         if (item == category || (i == 0 && category == '')) {
             tag.classList.add('selected');
@@ -125,37 +124,37 @@ async function fl_courses(categories) {
     };
 }
 
-async function fl_course() {
-    new_menu('#menu', [{href: '/courses.html', text: '課程'}]);
+NiceMeetingModules['/meeting.html'] = async function() {
+    new_menu('#menu', [{href: '/mettings.html', text: 'meetings'}]);
     set_goto('#goto', '#player');
     set_height('main', 'footer');
 
     const id = (new URLSearchParams(location.search)).get('id');
-    const course = await load_course(id);
-    var columns = document.querySelector('#course').children;
-    extend_columns(course, columns, function(name) {
-        location.href = `/courses.html?category=${name}`;
+    const meeting = await load_meeting(id);
+    var columns = document.querySelector('#meeting').children;
+    extend_columns(meeting, columns, function(name) {
+        location.href = `/meetings.html?category=${name}`;
     });
-    var isfollowd = await in_likes(course.Id);
-    var followbtn = document.querySelector('#follow');
-    followbtn.innerText = isfollowd ? '取關' : '關注';
-    followbtn.onclick = async function() {
-        var url = `/api/unfollow?course=${course.Id}`;
-        if (!isfollowd) {
-            url = `/api/follow?course=${course.Id}`;
-        }
-        const resp = await fetch(url);
-        if (resp.ok) {
-            isfollowd = !isfollowd;
-            followbtn.innerText = isfollowd ? '取關' : '關注';
-        } else if (resp.status == 403) {
-            location.href = `/login.html`;
-        }
-    };
-    if (course.Id == 0) return;
+    // var isfollowd = await in_likes(meeting.Id);
+    // var followbtn = document.querySelector('#follow');
+    // followbtn.innerText = isfollowd ? '取關' : '關注';
+    // followbtn.onclick = async function() {
+    //     var url = `/api/unfollow?meeting=${meeting.Id}`;
+    //     if (!isfollowd) {
+    //         url = `/api/follow?meeting=${meeting.Id}`;
+    //     }
+    //     const resp = await fetch(url);
+    //     if (resp.ok) {
+    //         isfollowd = !isfollowd;
+    //         followbtn.innerText = isfollowd ? '取關' : '關注';
+    //     } else if (resp.status == 403) {
+    //         location.href = `/login.html`;
+    //     }
+    // };
+    if (meeting.id == 0) return;
 
     set_loading('#loading');
-    const data = await load_contents(course.Id);
+    const data = await load_contents(meeting.id);
     del_loading('#loading');
     var index = document.querySelector("#index");
     data.forEach((lesson, id) => {
@@ -254,7 +253,6 @@ NiceMeetingModules['/user.html'] = async function(categories) {
     set_goto('#goto', 'nav');
 
     const user = await load_user();
-    console.log(user);
     var columns = document.querySelector('#user-profile').children;
     extend_columns(user, columns, null);
     var src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${user.name}`;
@@ -263,7 +261,7 @@ NiceMeetingModules['/user.html'] = async function(categories) {
         const elem = document.querySelector('#level');
         const link = document.createElement('a');
         elem.append(link);
-        link.href = '/admin/index.html';
+        link.href = '/admin/';
         link.innerText = '#Click go to work page';
         link.style.marginLeft = '0.1rem';
         link.style.fontSize = 'small';

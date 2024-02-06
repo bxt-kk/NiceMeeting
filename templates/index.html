@@ -7,15 +7,15 @@
     <header></header>
     <div class="container gallery">
         <div id="meeting">
-            <img f-name="Image" f-onclick="Id"/>
-            <header f-name="Title" f-onclick="Id"></header>
-            <small>#</small><small f-name="Id"></small>
-            <summary f-name="Introduction"></summary>
-            <time f-name="Time" style="float: right"></time>
+            <img f-name="Image" f-onclick="id"/>
+            <header f-name="title" f-onclick="id"></header>
+            <small>#</small><small f-name="id"></small>
+            <summary f-name="content"></summary>
+            <time f-name="last_edited_time" style="float: right"></time>
         </div>
     </div>
     <div style="text-align: center; margin-top: 2em">
-        <a class="button" href="/courses.html">More...</a>
+        <a class="button" href="/meetings.html">More...</a>
     </div>
 </section>
 {{ template "tail" . }}

@@ -15,13 +15,15 @@
         <a id="goto" class="goto-btn">
             <img src="/static/icon/down-chevron.png" alt=""/>
         </a>
+        <center id="loading"></center>
         <footer></footer>
     </body>
 </html>
 <script src="/static/js/functions.js" charset="utf-8"></script>
 <script src="/static/js/modules.js" charset="utf-8"></script>
+<script src="/static/js/player.js" charset="utf-8"></script>
 <script charset="utf-8">
-const categories = ['全部', '語文' ,'數學', '英語', '物理'];
+const categories = ['All', 'Python' ,'Go', 'JS', 'C++']; // # / 等符号会出现问题！
 window.onload = async function() {
     NiceMeetingModules[window.location.pathname](categories);
 };
