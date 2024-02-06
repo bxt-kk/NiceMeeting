@@ -198,8 +198,8 @@ div.tags {
 div.tags > a {
     text-align: center;
     text-decoration: none;
-    padding: 0.5rem 0;
-    margin: 0 0.5rem;
+    padding: 0.5rem;
+    margin: 0 0.2rem;
     cursor: pointer;
     border-radius: 1rem;
     border: 2px solid var(--base0d);
